@@ -1,55 +1,66 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./styleBackgroundInterative.css";
 
 function BackgoundInterative() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const parallax_e = document.querySelectorAll(".parallax");
-  function update(clientX) {
+
+  const parallaxElementsRef = useRef([]);
+
+  useEffect(() => {
+    updateParallax(mousePosition.x);
+  }, []);
+
+  const parallaxElements = parallaxElementsRef.current;
+
+  const updateParallax = (clientX) => {
     
-    parallax_e.forEach((element) => {
-      let speedx = element.dataset.speedx;
-      let speedy = element.dataset.speedy;
-      let speedz = element.dataset.speedz;
-      let rotate = element.dataset.rotate;
+    parallaxElements.forEach((element) => {
+      if (element) {
+        let speedx = element.dataset.speedx;
+        let speedy = element.dataset.speedy;
+        let speedz = element.dataset.speedz;
+        let rotate = element.dataset.rotate;
 
-      let rotedeDegree = 0;
-      rotedeDegree = (mousePosition.x / (window.innerWidth / 2)) * 20;
+        let rotedeDegree = 0;
+        rotedeDegree = (mousePosition.x / (window.innerWidth / 2)) * 20;
 
-      let isInLeft = 0;
-      isInLeft =
-        parseFloat(getComputedStyle(element).left) < window.innerWidth / 2
-          ? 1
-          : -1;
-      let zValue = 0;
-      zValue =
-        (clientX - parseFloat(getComputedStyle(element).left)) * isInLeft * 0.1;
+        let isInLeft = 0;
+        isInLeft =
+          parseFloat(getComputedStyle(element).left) < window.innerWidth / 2
+            ? 1
+            : -1;
+        let zValue = 0;
+        zValue =
+          (clientX - parseFloat(getComputedStyle(element).left)) *
+          isInLeft *
+          0.1;
 
-      element.style.transform = `translateX(calc(-50% + ${
-        -mousePosition.x * speedx
-      }px)) translateY(calc(-50% + ${
-        -mousePosition.y * speedy
-      }px)) perspective(2300px) translateZ(${zValue * speedz}px) rotateY(${
-        rotedeDegree * rotate
-      }deg)`;
+        element.style.transform = `translateX(calc(-50% + ${
+          -mousePosition.x * speedx
+        }px)) translateY(calc(-50% + ${
+          -mousePosition.y * speedy
+        }px)) perspective(2300px) translateZ(${zValue * speedz}px) rotateY(${
+          rotedeDegree * rotate
+        }deg)`;
+      }
     });
-  }
-  // Função para atualizar a posição do mouse
-  
+  };
   const handleMouseMove = (event) => {
     const { clientX, clientY } = event;
     setMousePosition({
       x: clientX - window.innerWidth / 2,
       y: clientY - window.innerHeight / 2,
     });
-    update(clientX);
+    updateParallax(clientX, mousePosition);
   };
 
   return (
     <div className="backgound-interative" onMouseMove={handleMouseMove}>
       <div className="vitage"></div>
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="bg-img parallax"
         src={"/assets/image/background.png"}
         data-speedx="0.3"
@@ -58,6 +69,7 @@ function BackgoundInterative() {
         data-rotate="0"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="fog-7 parallax"
         src={"/assets/image/fog_7.png"}
         data-speedx="0.27"
@@ -66,6 +78,7 @@ function BackgoundInterative() {
         data-rotate="0"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-10 parallax"
         src={"/assets/image/mountain_10.png"}
         data-speedx="0.195"
@@ -74,6 +87,7 @@ function BackgoundInterative() {
         data-rotate="0"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="fog-6 parallax"
         src={"/assets/image/fog_6.png"}
         data-speedx="0.25"
@@ -82,6 +96,7 @@ function BackgoundInterative() {
         data-rotate="0"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-9 parallax"
         src={"/assets/image/mountain_9.png"}
         data-speedx="0.125"
@@ -90,6 +105,7 @@ function BackgoundInterative() {
         data-rotate="0.02"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-8 parallax"
         src={"/assets/image/mountain_8.png"}
         data-speedx="0.1"
@@ -105,6 +121,7 @@ function BackgoundInterative() {
         data-rotate="0"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-7 parallax"
         src={"/assets/image/mountain_7.png"}
         data-speedx="0.065"
@@ -113,6 +130,7 @@ function BackgoundInterative() {
         data-rotate="0.02"
       />
       <div
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="text parallax"
         data-speedx="0.07"
         data-speedy="0.07"
@@ -123,6 +141,7 @@ function BackgoundInterative() {
         <h1>Harrison</h1>
       </div>
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-6 parallax"
         src={"/assets/image/mountain_6.png"}
         data-speedx="0.135"
@@ -131,6 +150,7 @@ function BackgoundInterative() {
         data-rotate="0.12"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="fog-4 parallax"
         src={"/assets/image/fog_4.png"}
         data-speedx="0.081"
@@ -139,6 +159,7 @@ function BackgoundInterative() {
         data-rotate="0"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-5 parallax"
         src={"/assets/image/mountain_5.png"}
         data-speedx="0.059"
@@ -147,6 +168,7 @@ function BackgoundInterative() {
         data-rotate="0.15"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="fog-3 parallax"
         src={"/assets/image/fog_3.png"}
         data-speedx="0.04"
@@ -155,6 +177,7 @@ function BackgoundInterative() {
         data-rotate="0"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-4 parallax"
         src={"/assets/image/mountain_4.png"}
         data-speedx="0.015"
@@ -163,6 +186,7 @@ function BackgoundInterative() {
         data-rotate="0.08"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-3 parallax"
         src={"/assets/image/mountain_3.png"}
         data-speedx="0.0235"
@@ -171,6 +195,7 @@ function BackgoundInterative() {
         data-rotate="0.11"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="fog-2 parallax"
         src={"/assets/image/fog_2.png"}
         data-speedx="0.027"
@@ -184,6 +209,7 @@ function BackgoundInterative() {
         src={"/assets/image/black_shadow.png"}
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-2 parallax"
         src={"/assets/image/mountain_2.png"}
         data-speedx="0.027"
@@ -192,6 +218,7 @@ function BackgoundInterative() {
         data-rotate="0.15"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="montain-1 parallax"
         src={"/assets/image/mountain_1.png"}
         data-speedx="0.012"
@@ -200,6 +227,7 @@ function BackgoundInterative() {
         data-rotate="0.2"
       />
       <img
+        ref={(el) => parallaxElementsRef.current.push(el)}
         className="fog-1 parallax"
         src={"/assets/image/fog_1.png"}
         data-speedx="0.03"
